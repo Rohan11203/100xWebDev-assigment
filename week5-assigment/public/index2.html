@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.6/axios.min.js"></script>
+</head>
+<body>
+  <input id="aa" type="text" placeholder="number1">
+  <input id="bb" type="text" placeholder="number2">
+  <button onclick="add()">Add</button>
+
+  <p id="result">res:</p>
+
+  <script>
+    async function add(){
+      const response = await axios.post('http://localhost:3001/sum',{
+          a: document.getElementById('aa').value,
+        b: document.getElementById('bb').value
+        
+      })
+      
+      const result =  response.data;
+      document.getElementById('result').innerText = result.answer;
+    }
+  </script>
+</body>
+</html>
