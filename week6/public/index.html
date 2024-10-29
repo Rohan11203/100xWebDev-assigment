@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Week6</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.7/axios.min.js"></script>
+    <link rel="stylesheet" href="index.css">
+  </head>
+  <body>
+    <script>
+      async function signup() {
+        const username = document.getElementById("signup-username").value;
+        const password = document.getElementById("signup-password").value;
+
+        try {
+          const response = await axios.post("http://localhost:3000/signup", {
+            username: username,
+            password: password,
+          });
+
+          alert("Signup successfully");
+        } catch (error) {
+          alert("Signup failed");
+        }
+      }
+
+      async function singin() {
+        const username = document.getElementById("signin-username").value;
+        const password = document.getElementById("signin-password").value;
+
+        try {
+          const response = await axios.post("http://localhost:3000/signin", {
+            username: username,
+            password: password,
+          });
+
+          localStorage.setItem("token", response.data.token);
+
+          alert("Signin successfully");
+        } catch (error) {
+          alert("Signin failed");
+        }
+      }
+
+      async function getUserInformation() {
+        const token = localStorage.getItem("token");
+
+        if (token) {
+          const response = await axios.get("http://localhost:3000/me", {
+            headers: {
+              token: token,
+            },
+          });
+          document.getElementById("information").innerHTML =
+            response.data.username;
+        } else {
+          alert("You are not logged in");
+        }
+      }
+
+      async function Logout(){
+        localStorage.removeItem("token");
+        alert("Logged out successfully");
+        document.getElementById("information").innerHTML = "";
+        getUserInformation(); // To update the user information after logout
+      }
+    </script>
+
+    <div class="container">
+      <div>
+        Signup
+        <input id="signup-username" type="text" placeholder="username" />
+        <input id="signup-password" type="password" placeholder="password" />
+        <button class="signup-btn" onclick="signup()">Submit</button>
+      </div>
+  
+      <div>
+        SignIN
+        <input id="signin-username" type="text" placeholder="username" />
+        <input id="signin-password" type="password" placeholder="password" />
+        <button class="signin-btn" onclick="singin()">Submit</button>
+      </div>
+  
+      <div>
+        Fetch User Info
+        <div id="information"></div>
+        <button onclick="getUserInformation()">Submit</button>
+      </div>
+  
+      <div>
+        <button onclick="Logout()">Logout</button>
+      </div>
+    </div>
+  </body>
+</html>
