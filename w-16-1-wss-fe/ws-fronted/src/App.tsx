@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react'
-import './App.css'
 
 function App() {
   const [socket, setSocket] = useState()
@@ -12,6 +11,7 @@ function App() {
       return;
     }
     const message = inputRef.current?.value;
+    
     //@ts-ignore
     socket.send(message);
   }
@@ -26,6 +26,9 @@ function App() {
   },[])
   return (
     <>
+      <div>
+        <p></p>
+      </div>
       <input ref={inputRef} type='text' placeholder='Enter here'></input>
       <button onClick={sendMessage}>Send</button>
     </>
